@@ -19,7 +19,7 @@ import java.util.List;
 public class Recommendation {
     @Id
     private String id;
-    private String  activityId;
+    private String activityId;
     private String userId;
     private String activityType;
     private String recommendation;

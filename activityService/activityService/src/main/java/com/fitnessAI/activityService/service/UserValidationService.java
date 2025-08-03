@@ -31,7 +31,7 @@ public class UserValidationService {
                 throw new RuntimeException("Invalid request");
         }
 
-        ;
+
         return false;
     }
 }

@@ -17,21 +17,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ActivityService {
-    private final  UserValidationService userValidationService;
     private final ActivityRepository activityRepository;
+    private final UserValidationService userValidationService;
     private final RabbitTemplate rabbitTemplate;
 
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
+
     @Value("${rabbitmq.routing.key}")
     private String routingKey;
 
     public ActivityResponse trackActivity(ActivityRequest request) {
+
         boolean isValidUser = userValidationService.validateUser(request.getUserId());
-
-
-        if(!isValidUser){
-            throw new RuntimeException("Invalid user: " + request.getUserId());
+        if (!isValidUser) {
+            throw new RuntimeException("Invalid User: " + request.getUserId());
         }
 
         Activity activity = Activity.builder()
@@ -44,19 +44,18 @@ public class ActivityService {
                 .build();
 
         Activity savedActivity = activityRepository.save(activity);
-        //Publish to rabbitmq for AI processing
-        try{
-            //rabbit template
+
+        // Publish to RabbitMQ for AI Processing
+        try {
             rabbitTemplate.convertAndSend(exchange, routingKey, savedActivity);
-        } catch (Exception e){
-            log.error("Failed to publish activity to RabbitMQ: ", e);
+        } catch(Exception e) {
+            log.error("Failed to publish activity to RabbitMQ : ", e);
         }
 
-        return  maptoResponse(savedActivity);
+        return mapToResponse(savedActivity);
     }
 
-    //This method  will take the object of typeActivity and will convert it to the object of activityResponse
-    private ActivityResponse maptoResponse(Activity activity){
+    private ActivityResponse mapToResponse(Activity activity){
         ActivityResponse response = new ActivityResponse();
         response.setId(activity.getId());
         response.setUserId(activity.getUserId());
@@ -71,15 +70,15 @@ public class ActivityService {
     }
 
     public List<ActivityResponse> getUserActivities(String userId) {
-        List<Activity> activities  = activityRepository.findByUserId(userId);
+        List<Activity> activities = activityRepository.findByUserId(userId);
         return activities.stream()
-                .map(this::maptoResponse)
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
     public ActivityResponse getActivityById(String activityId) {
         return activityRepository.findById(activityId)
-                .map(this::maptoResponse)
-                .orElseThrow(() -> new RuntimeException("Activityu not found with id: " + activityId));
+                .map(this::mapToResponse)
+                .orElseThrow(() -> new RuntimeException("Activity not found with id: " + activityId));
     }
 }
