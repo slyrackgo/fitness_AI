@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
+- [Usage](#Usage)
 
 
 ## Introduction
@@ -35,6 +36,18 @@
  # Build the Eureka service first
 cd eureka/eureka
 mvn clean install
+
+## Usage
+> Start the services in the following order to ensure proper communication.
+java -jar eureka/eureka/target/eureka-0.0.1-SNAPSHOT.jar
+# Start the User Service
+java -jar userService/userService/target/userService-0.0.1-SNAPSHOT.jar
+
+# Start the Activity Service
+java -jar activityService/activityService/target/activityService-0.0.1-SNAPSHOT.jar
+
+# Start the AI Service
+java -jar AI_Service/AI_Service/target/AI_Service-0.0.1-SNAPSHOT.jar
 
 
 
