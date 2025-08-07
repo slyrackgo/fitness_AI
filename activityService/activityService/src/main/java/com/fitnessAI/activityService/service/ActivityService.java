@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ActivityService {
+
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
     private final RabbitTemplate rabbitTemplate;

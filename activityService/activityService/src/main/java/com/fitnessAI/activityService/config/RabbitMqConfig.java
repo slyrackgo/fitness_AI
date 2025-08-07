@@ -13,6 +13,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 
 @Configuration
 public class RabbitMqConfig {
+
     @Value("${rabbitmq.queue.name}")
     private String queue;
 
@@ -24,7 +25,6 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue activityQueue() {
-        //parameter that saves message in the queue
         return new Queue(queue, true);
     }
 
@@ -34,13 +34,12 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public Binding activityBinding(Queue activityQueue, DirectExchange activityExchange){
-        return  BindingBuilder.bind(activityQueue).to(activityExchange).with(routingKey);
+    public Binding activityBinding(Queue activityQueue, DirectExchange activityExchange) {
+        return BindingBuilder.bind(activityQueue).to(activityExchange).with(routingKey);
     }
 
-
     @Bean
-    public MessageConverter jsonMessageConverter(){
+    public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 }

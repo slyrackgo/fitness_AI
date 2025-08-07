@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class ActivityAIService {
-    private GeminiService geminiService;
+    private final GeminiService geminiService;
 
     public String generateRecommendation(Activity activity){
         String prompt = createPromptForActivity(activity);

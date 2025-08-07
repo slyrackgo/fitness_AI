@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.Data;
 
+
 @Data
 public class ActivityRequest {
     private String userId;

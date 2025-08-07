@@ -15,5 +15,6 @@ public class ActivityMessageListener {
     public void processActivity(Activity activity){
         log.info("Received activity for processing: {}", activity.getId());
         log.info("Generated recommendation: {}", aiService.generateRecommendation(activity));
+
     }
 }

@@ -8,6 +8,12 @@ spring:
     url: jdbc:mysql://localhost:3306/fitness_user_db
     username: root
     password: 290903@a
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+
+
   jpa:
     hibernate:
       ddl-auto: update
