@@ -3,7 +3,7 @@ spring:
     name: ai-service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/
+      uri: mongodb://localhost:27017
       database: fitnessRecommendation
     rabbitmq:
         host: localhost
@@ -29,8 +29,8 @@ rabbitmq:
 
 gemini:
   api:
-    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=
-    key: AIzaSyDPuYeQvZ3CwWVgCJr7cIOJS_nSLJD60s8
+    url: {GEMINI_API_URL}
+    key: {GEMINI_API_KEY}
 
 
 
