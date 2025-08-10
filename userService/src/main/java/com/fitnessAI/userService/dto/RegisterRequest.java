@@ -13,6 +13,7 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 6, message="Password is too short! It should contain at leaast 5 characters")
     private String password;
+    private String keycloackId;
     private String firstName;
     private String lastName;
 }
