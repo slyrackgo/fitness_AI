@@ -33,6 +33,7 @@ public class UserService {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setKeycloackId(request.getKeycloackId());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
 
