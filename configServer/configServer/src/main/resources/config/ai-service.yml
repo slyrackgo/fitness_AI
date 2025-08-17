@@ -1,3 +1,5 @@
+server:
+  port: 8083
 spring:
   application:
     name: ai-service
@@ -11,8 +13,7 @@ spring:
         username: guest
         password: guest
 
-server:
-  port: 8083
+
 
 eureka:
   client:
