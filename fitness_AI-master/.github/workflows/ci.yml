@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '24'
+      - name: Run repository check
+        run: |
+          sudo apt-get update && sudo apt-get install -y maven
+          make check
+      - name: Upload JaCoCo reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-reports
+          path: |
+            **/target/site/jacoco/**
+            **/target/jacoco.xml
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '24'
+
+      - name: Cache Maven local repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+      - name: Run repository checks
+        run: |
+          set -e
+          cd ${GITHUB_WORKSPACE}
+          if [ -f Makefile ]; then
+            make check
+          else
+            ./eureka/eureka/mvnw -f eureka/eureka/pom.xml -B clean package
+            ./userService/mvnw -f userService/pom.xml -B clean package
+            ./activityService/activityService/mvnw -f activityService/activityService/pom.xml -B clean package
+            ./AI_Service/AI_Service/mvnw -f AI_Service/AI_Service/pom.xml -B clean package
+          fi

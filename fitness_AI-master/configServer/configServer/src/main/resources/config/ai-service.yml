@@ -1,0 +1,37 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: ai-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/
+      database: fitnessRecommendation
+    rabbitmq:
+        host: localhost
+        port: 5672
+      username: ${SPRING_RABBITMQ_USERNAME:guest}
+      password: ${SPRING_RABBITMQ_PASSWORD:}
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+rabbitmq:
+  exchange:
+    name: fitness.exchange
+  queue:
+    name: ${RABBITMQ_QUEUE_NAME:activity.queue}
+  routing:
+    key: ${RABBITMQ_ROUTING_KEY:activity.tracking}
+
+gemini:
+  api:
+    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+    key: ${GEMINI_API_KEY:}
+
+
+

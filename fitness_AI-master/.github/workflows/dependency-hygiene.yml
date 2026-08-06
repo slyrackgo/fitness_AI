@@ -1,0 +1,51 @@
+name: Dependency hygiene
+
+on:
+  push:
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - '**/pom.xml'
+      - '.github/workflows/**'
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          java-version: '24'
+          distribution: 'temurin'
+
+      - name: Run Maven verify and generate SBOM
+        run: |
+          mvn -B -T1C -DskipTests verify
+
+      - name: Generate CycloneDX SBOM (aggregate)
+        run: |
+          mvn -B org.cyclonedx:cyclonedx-maven-plugin:2.7.6:makeAggregateBom
+
+      - name: Show dependency tree for modules
+        run: |
+          mvn -B -pl userService,AI_Service/activityService,eureka dependency:tree || true
+
+      - name: Upload SBOM
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: '**/target/bom-*.xml'
+
+      - name: Run Trivy scan on SBOM (if available)
+        if: success()
+        uses: aquasecurity/trivy-action@v2
+        with:
+          scan-type: 'sbom'
+          format: 'table'
+          exit-code: '1'
+          file: '**/target/bom-*.xml'

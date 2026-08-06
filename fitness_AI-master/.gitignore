@@ -1,0 +1,25 @@
+# Ignore build outputs
+/target/
+**/target/
+
+# Maven wrapper
+.mvn/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+.log
+
+# Environment files
+.env
+.env.local
+
+# Other
+node_modules/
